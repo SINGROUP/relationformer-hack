@@ -20,6 +20,7 @@ from scipy.sparse.csgraph import connected_components
 from skimage.morphology import skeletonize_3d
 from utils import Bresenham3D
 import itertools
+from vtk.util.numpy_support import vtk_to_numpy
 
 # train_transform = Compose(
 #     [
@@ -79,18 +80,25 @@ class vessel_loader(Dataset):
         vmax = image_data.max()*0.001
         image_data = image_data/vmax
         vtk_data = pyvista.read(data['vtp'])
+
+        vtk_np = vtk_to_numpy(vtk_data.points.GetData())
+
         seg_data, _ = load(data['seg'])
-        seg_data = torch.tensor(seg_data, dtype=torch.int).unsqueeze(0).unsqueeze(0)
-
-
+        seg_data = torch.tensor(seg_data, dtype=torch.float).unsqueeze(0).unsqueeze(0)
 
         # correction of shift in the data
         # shift = [np.shape(image_data)[0]/2 -1.8, np.shape(image_data)[1]/2 + 8.3, 4.0]
         # coordinates = np.float32(np.asarray(vtk_data.points/3.0+shift))
         # lines = np.asarray(vtk_data.lines.reshape(vtk_data.n_cells, 3))
 
-        coordinates = torch.tensor(np.float32(np.asarray(vtk_data.points)), dtype=torch.float)
+        coordinates = torch.tensor(np.float32(vtk_np), dtype=torch.float)
         lines = torch.tensor(np.asarray(vtk_data.lines.reshape(-1, 3)), dtype=torch.int64)
+
+        # print all output types and shapes
+        #print('image_data:', image_data.shape, image_data.dtype)
+        #print('seg_data:', seg_data.shape, seg_data.dtype)
+        #print('coordinates:', coordinates.shape, coordinates.dtype)
+        #print('lines:', lines.shape, lines.dtype)
 
         return [image_data-0.5], [seg_data], [coordinates], [lines[:,1:]]
 

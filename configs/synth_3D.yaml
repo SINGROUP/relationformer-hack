@@ -8,7 +8,7 @@ DATA:
   NUM_PATCH: 4            # no of patch from each volume
   INTERPOLATION: 'bicubic'        # Interpolation to resize image (random, bilinear, bicubic)
   PIN_MEMORY: True        # Pin CPU memory in DataLoader for more efficient (sometimes) transfer to GPU.
-  NUM_WORKERS: 16         # Number of data loading threads
+  NUM_WORKERS: 0         # Number of data loading threads
   SEED: 10                # random seed for reproducibility
 
 MODEL:
