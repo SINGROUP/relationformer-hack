@@ -7,3 +7,6 @@
 *resources
 *trained_weights
 *models/ops/*
+
+.conda*
+*.out
