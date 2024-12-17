@@ -22,6 +22,9 @@ import ignite.distributed as igdist
 from ignite.contrib.handlers.tqdm_logger import ProgressBar
 from torch.utils.tensorboard import SummaryWriter
 
+from torchvision import transforms
+from dataloading import data_loading, preprocessing
+
 parser = ArgumentParser()
 parser.add_argument('--config',
                     default=None,
@@ -80,9 +83,20 @@ def main(rank, args):
         # Thus each node will download a copy of the dataset
         igdist.barrier()
 
-    train_ds, val_ds = build_vessel_data(config,
-                                         mode='split',
-                                         )
+    #train_ds, val_ds = build_vessel_data(config,
+    #                                     mode='split',
+    #                                     )
+
+    tfs = transforms.Compose([
+        preprocessing.NormalizeImage(),
+    ])
+
+    train_ds, val_ds = data_loading.get_datasets(
+        config.DATA.DATA_PATH,
+        train_transform=tfs,
+        val_transform=tfs,
+        train_size=0.8
+    )
 
     if igdist.get_local_rank() == 0:
         # Ensure that only local rank 0 download the dataset
@@ -92,14 +106,14 @@ def main(rank, args):
                               batch_size=config.DATA.BATCH_SIZE,
                               shuffle=True,
                               num_workers=config.DATA.NUM_WORKERS,
-                              collate_fn=image_graph_collate,
+                              collate_fn=data_loading.afm_collate_fn,
                               pin_memory=True)
     
     val_loader = igdist.auto_dataloader(val_ds,
                             batch_size=config.DATA.BATCH_SIZE,
                             shuffle=False,
                             num_workers=config.DATA.NUM_WORKERS,
-                            collate_fn=image_graph_collate,
+                            collate_fn=data_loading.afm_collate_fn,
                             pin_memory=True)
 
     device = torch.device(args.device)
