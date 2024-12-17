@@ -59,7 +59,7 @@ class SetCriterion(nn.Module):
         2) we supervise each pair of matched ground-truth / prediction (supervise class and box)
     """
 
-    def __init__(self, config, matcher, relation_embed):
+    def __init__(self, config, matcher, relation_embed, num_classes):
         """ Create the criterion.
         Parameters:
             num_classes: number of object categories, omitting the special no-object category
@@ -71,6 +71,7 @@ class SetCriterion(nn.Module):
         super().__init__()
         self.matcher = matcher
         self.relation_embed = relation_embed
+        self.num_classes = num_classes
         self.rln_token = config.MODEL.DECODER.RLN_TOKEN
         self.obj_token = config.MODEL.DECODER.OBJ_TOKEN
         self.losses = config.TRAIN.LOSSES
@@ -81,12 +82,13 @@ class SetCriterion(nn.Module):
                             'edges':config.TRAIN.W_EDGE,
                             }
         
-    def loss_class(self, outputs, indices):
+    def loss_class(self, outputs, targets, indices):
         """Compute the losses related to the bounding boxes, the L1 regression loss and the GIoU loss
            targets dicts must contain the key "boxes" containing a tensor of dim [nb_target_boxes, 4]
            The target boxes are expected in format (center_x, center_y, w, h), normalized by the image size.
         """
-        weight = torch.tensor([0.25, 0.75]).to(outputs.get_device())
+
+        weight = torch.ones(self.num_classes).to(outputs.get_device())
         
         idx = self._get_src_permutation_idx(indices)
 
@@ -99,9 +101,11 @@ class SetCriterion(nn.Module):
         # # loss = F.cross_entropy(outputs.permute(0,2,1), targets, weight=weight, reduction='mean')
         # loss = sigmoid_focal_loss(outputs, targets, num_nodes)
         
-        targets = torch.zeros(outputs[...,0].shape, dtype=torch.long).to(outputs.get_device())
-        targets[idx] = 1.0
-        loss = F.cross_entropy(outputs.permute(0,2,1), targets, weight=weight, reduction='mean')
+        target_classes_o = torch.cat([t[J] for t, (_, J) in zip(targets, indices)])
+        target_classes = torch.zeros(outputs[...,0].shape, dtype=torch.long).to(outputs.get_device())
+        target_classes[idx] = target_classes_o.long()
+
+        loss = F.cross_entropy(outputs.permute(0,2,1), target_classes, weight=weight, reduction='mean')
         
         # cls_acc = 100 - accuracy(outputs, targets_one_hot)[0]
         return loss
@@ -266,12 +270,15 @@ class SetCriterion(nn.Module):
 
         # Retrieve the matching between the outputs of the last layer and the targets
         indices = self.matcher(out, target)
+
+        target_elements = [v[..., -1] for v in target['nodes']]
+        target_nodes = [v[...,:3] for v in target['nodes']]
         
         losses = {}
-        losses['class'] = self.loss_class(out['pred_logits'], indices)
-        losses['nodes'] = self.loss_nodes(out['pred_nodes'][...,:3], target['nodes'], indices)
-        losses['boxes'] = self.loss_boxes(out['pred_nodes'], target['nodes'], indices)
-        losses['edges'] = self.loss_edges(h, target['nodes'], target['edges'], indices)
+        losses['class'] = self.loss_class(out['pred_logits'], target_elements, indices)
+        losses['nodes'] = self.loss_nodes(out['pred_nodes'][...,:3], target_nodes, indices)
+        losses['boxes'] = self.loss_boxes(out['pred_nodes'], target_nodes, indices)
+        losses['edges'] = self.loss_edges(h, target_nodes, target['edges'], indices)
         losses['cards'] = self.loss_cardinality(out['pred_logits'], indices)
         
         losses['total'] = sum([losses[key]*self.weight_dict[key] for key in self.losses])

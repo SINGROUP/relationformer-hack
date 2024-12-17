@@ -12,6 +12,14 @@ COVALENT_RADII = {
     9: 0.71,
 }
 
+ELEMENT_TO_INDEX = {
+    1: 0,
+    6: 1,
+    7: 2,
+    8: 3,
+    9: 4,
+}
+
 class AFMData(Dataset):
     def __init__(self, data_path, transform=None, train_size=0.8, split='train'):
         self.data_path = data_path
@@ -54,9 +62,20 @@ class AFMData(Dataset):
                 dist = np.linalg.norm(xyz[i, :3] - xyz[j, :3])
                 if dist < 1.2 * (COVALENT_RADII[xyz[i, -1]] + COVALENT_RADII[xyz[j, -1]]):
                     edges.append([i, j])
+        
+        # Normalize xyz to [0.25, 0.75]
+        xyzmin = np.min(xyz[:, :3])
+        xyzmax = np.max(xyz[:, :3])
+
+        xyz[:, :3] = (xyz[:, :3] - xyzmin) / (xyzmax - xyzmin)
+        xyz[:, :3] = 0.5 * xyz[:, :3] + 0.25
+
 
         # Pick only xyz coordinates
-        xyz = xyz[:, :3]
+        #xyz = xyz[:, :3] # [x, y, z, charge, atom_type]
+
+        # Map atom types to integers (0, 1, 2, ...)
+        xyz[:, -1] = [ELEMENT_TO_INDEX[atom_type] for atom_type in xyz[:, -1]]
 
         sample = {'x': x, 'nodes': xyz, 'edges': np.asarray(edges)}
         if self.transform:

@@ -135,7 +135,7 @@ def main(rank, args):
         net_wo_dist = net.module
 
     matcher = build_matcher(config)
-    loss = SetCriterion(config, matcher, relation_embed)
+    loss = SetCriterion(config, matcher, relation_embed, num_classes=5)
 
     optimizer = torch.optim.AdamW(
         net_wo_dist.parameters(), lr=float(config.TRAIN.BASE_LR), weight_decay=float(config.TRAIN.WEIGHT_DECAY)
