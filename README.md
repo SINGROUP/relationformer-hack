@@ -1,4 +1,4 @@
-# Relationformer: A Unified Framework for Image-to-Graph Generation
+# Structure discovery through Image-to-Graph machine learning model
 
 ![](https://cdn.jsdelivr.net/gh/HuangJiaLian/DataBase0@master/uPic/2024-12-17-19-30-Hello.png)
 
