@@ -87,4 +87,4 @@ TRAIN:
 
 
 log:
-  exp_name: "synth_data_relationformer_v0"
+  exp_name: "synth_data_relationformer_v0-multigpu"

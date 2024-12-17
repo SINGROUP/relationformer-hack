@@ -47,7 +47,7 @@ class HungarianMatcher(nn.Module):
         out_nodes = outputs['pred_nodes'][...,:3].flatten(0, 1)  # [batch_size * num_queries, 3]
 
         # Also concat the target labels and boxes
-        tgt_nodes = torch.cat([v for v in targets['nodes']])
+        tgt_nodes = torch.cat([v[:, :3] for v in targets['nodes']])
 
         # Compute the L1 cost between nodes
         cost_nodes = torch.cdist(out_nodes, tgt_nodes, p=1)

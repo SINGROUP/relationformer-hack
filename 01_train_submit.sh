@@ -1,10 +1,10 @@
 #!/bin/bash
 #SBATCH --time=05-00:00:00      # Job time allocation
-#SBATCH --gres=gpu:1            # Request GPUs
-# SBATCH --constraint=ampere|volta       # Request specific nodes
+#SBATCH --gres=gpu:4            # Request GPUs
+### SBATCH --constraint=ampere|volta       # Request specific nodes
 #SBATCH --mem=64G               # Memory
 #SBATCH --nodes=1               # Total number of nodes 
-#SBATCH -c 4                  # Number of cores per task/node
+#SBATCH -c 16                 # Number of cores per task/node
 #SBATCH -J 01_train    # Job name
 #SBATCH -o train_%j.out          # Output file
 
@@ -25,5 +25,5 @@ echo "Job Name: "$SLURM_JOB_NAME
 echo "Running on nodes: "$SLURM_JOB_NODELIST
 echo "which Python: "$(which python)
 
-python train.py --config configs/synth_3D.yaml --cuda_visible_device 0  --nproc_per_node 1
+python train.py --config configs/synth_3D.yaml --cuda_visible_device 0 1 2 3  --nproc_per_node 4
 

@@ -45,7 +45,7 @@ class RelationFormer(nn.Module):
         
         self.input_proj = nn.Conv3d(encoder.num_features, config.MODEL.DECODER.HIDDEN_DIM, kernel_size=1)
         
-        self.class_embed = nn.Linear(config.MODEL.DECODER.HIDDEN_DIM, 2)
+        self.class_embed = nn.Linear(config.MODEL.DECODER.HIDDEN_DIM, 5)
         self.coord_embed = MLP(config.MODEL.DECODER.HIDDEN_DIM, config.MODEL.DECODER.HIDDEN_DIM, 6, 3)
         self.obj_token = config.MODEL.DECODER.OBJ_TOKEN
         if config.MODEL.DECODER.RLN_TOKEN>0:
