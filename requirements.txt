@@ -17,3 +17,4 @@ PyYAML==6.0
 scikit_image==0.17.2
 pytorch-ignite
 tensorboard
+webdataset
