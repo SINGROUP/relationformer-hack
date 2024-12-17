@@ -1,72 +1,41 @@
-# Relationformer: A Unified Framework for Image-to-Graph Generation
+# Structure Discovery through Image-to-Graph Machine Learning Model
 
-## Requirements
-* CUDA>=9.2
-* PyTorch>=1.7.1
-
-For other system requirements please follow
-
-```bash
-pip install -r requirements.txt
-```
-
-### Compiling CUDA operators
-```bash
-cd ./models/ops
-python setup.py install
-```
+![](https://cdn.jsdelivr.net/gh/HuangJiaLian/DataBase0@master/uPic/2024-12-17-19-30-Hello.png)
 
 
-## Code Usage
+## Motivation
 
-## 1. Dataset preparation
+Atomic Force Microscopy (AFM) with a CO functionalized tip plays a crucial role in characterizing atomic-scale nanostructures. However, identifying structures from AFM images is a challenging task that relies heavily on human expertise. Simulations, particularly with Particle Probe AFM (PPAFM) [1], offer a cost-effective solution for generating large volumes of AFM images. By training state-of-the-art machine learning models with extensive PPAFM-generated datasets, the underlying molecular geometry can be predicted accurately. 
 
-Please download [Synthetic Vessel dataset](https://github.com/giesekow/deepvesselnet/wiki/Datasets/) and organize them as following:
+In our previous works [2,3,4], we developed machine learning workflows based on a two-stage process. To enhance this workflow, we aim to use an end-to-end model, which simplifies the training process and improves overall efficiency. Such a model has great potential for application to experimental AFM images, enabling faster and more reliable structure discovery.
 
-```
-code_root/
-└── data/
-    └── vessel_data/
-        ├── raw/
-        ├── seg/
-        └── vtk/
-```
+## What we've done
 
-After downloading the dataset run the following script to preprocess and prepare the data for training
-```
-python generate_data.py
-```
+During the hackathon, we successfully started training an image-to-graph translation tool, Relationformer [5], with non-contact AFM (nc-AFM) images to predict sample structures. Specifically, we used a transformer-based model capable of simultaneously predicting objects (atoms) and their relationships (bonds), ensuring accurate geometric characterization. To train this model, we utilized a high-throughput nc-AFM simulator, PPAFM, which provides high-resolution AFM images alongside molecular graph labels.
 
-## 2. Training
+## Methods
 
-#### 2.1 Prepare config file
+- Simulation data: We have use PPM model to get the simulated images. 
+- Image-to-Graph model: We have use the Relationformer as our end-to-end model. 
 
-The config file can be found at `.configs/synth_3D.yaml`. Make custom changes if necessary.
+## Expected results
 
-#### 2.2.a Training on multiple-GPU (e.g. 3 GPUs)
+- Accurate prediction of molecular graphs, including atom types and bond information, from AFM images.
+- Enhanced workflow efficiency by transitioning to an end-to-end machine learning model.
 
-For example, the command for training Relationformer is following:
 
-```bash
-python train.py --config configs/synth_3D.yaml --cuda_visible_device 0 1 2 --nproc_per_node 3
-```
+## References
+1. N. Oinonen, A. V. Yakutovich, A. Gallardo, M. Ondracek, P. Hapala, O. Krejci, *Advancing Scanning Probe Microscopy Simulations: A Decade of Development in Probe-Particle Models*, Comput. Phys. Commun. **305**, 109341 (2024).
 
-<!-- #### 2.2.b Training on slurm cluster (e.g. 3 GPUs)
+2. F. Priante, N. Oinonen, Y. Tian, D. Guan, C. Xu, S. Cai, P. Liljeroth, Y. Jiang, A. S. Foster, *ACS Nano* **18**(7), 5546-5555 (2024). 
 
-If you are using slurm cluster, you can simply run the following command to train on 1 node:
+3. L. Kurki, N. Oinonen, A. S. Foster, *ACS Nano* **18**(17), 11130-11138 (2024). 
 
-```bash
-srun -u --nodelist worker-1 --gres=gpu:3 -c 16 python train.py --config configs/synth_3D.yaml --nproc_per_node=3
-``` -->
+4. N. Oinonen, L. Kurki, A. Ilin *et al.*, *Molecule Graph Reconstruction from Atomic Force Microscope Images with Machine Learning*, MRS Bull. **47**, 895–905 (2022). 
 
-## 3. Evaluation
+5. S. Shit, R. Koner, B. Wittmann *et al.*, *Relationformer: A Unified Framework for Image-to-Graph Generation*, arXiv:2203.10202 (2022).
 
-Once you have the config file and trained model of Relation, run following command to evaluate it on test set:
 
-```bash
-python run_batch_inference_eval.py --config configs/synth_3D.yaml --model ./trained_weights/last_checkpoint.pt --eval
-```
+## Aknowlegements
 
-## 4. Interactive notebook
-
-Please find the `debug_relationformer.ipynb` for interactive evaluation and visualization
+We thank the authors of the project of [Relationformer](https://github.com/suprosanna/relationformer).
