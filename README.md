@@ -4,7 +4,7 @@
 
 ## Introduction
 
-Atomic Force Microscopy (AFM) plays a crucial role in characterizing atomic-scale nanostructures. However, identifying structures from AFM images is a challenging task that relies heavily on human expertise. Simulations, particularly with Particle Probe AFM (PPAFM), offer a cost-effective solution for generating large volumes of AFM images. By leveraging state-of-the-art machine learning models and extensive PPAFM-generated datasets, properties such as molecular structures, electrostatic potential maps, and molecular graphs can be accurately predicted using AFM images obtained from simulations or experiments.
+Atomic Force Microscopy (AFM) plays a crucial role in characterizing atomic-scale nanostructures. However, identifying structures from AFM images is a challenging task that relies heavily on human expertise. Simulations, particularly with Particle Probe AFM (PPAFM) [1, 2, 3], offer a cost-effective solution for generating large volumes of AFM images. By leveraging state-of-the-art machine learning models and extensive PPAFM-generated datasets, properties such as molecular structures, electrostatic potential maps, and molecular graphs can be accurately predicted using AFM images obtained from simulations or experiments.
 
 ## Motivation
 
@@ -30,6 +30,9 @@ Image-to-Graph model: We have use the Relationformer as our end-to-end model.
 - Potential applicability to experimental AFM images for real-world structure discovery.
 
 ## References
+1. Niko Oinonen, Aliaksandr V. Yakutovich, Aurelio Gallardo, Martin Ondracek, Prokop Hapala, Ondrej Krejci, Advancing Scanning Probe Microscopy Simulations: A Decade of Development in Probe-Particle Models, Comput. Phys. Commun. 305, 109341 - Available online 10 August 2024 <br/> 
+2. Prokop Hapala, Georgy Kichin, Christian Wagner, F. Stefan Tautz, Ruslan Temirov, and Pavel Jelínek, Mechanism of high-resolution STM/AFM imaging with functionalized tips, Phys. Rev. B 90, 085421 – Published 19 August 2014 <br/>
+3. Prokop Hapala, Ruslan Temirov, F. Stefan Tautz, and Pavel Jelínek, Origin of High-Resolution IETS-STM Images of Organic Molecules with Functionalized Tips, Phys. Rev. Lett. 113, 226101 – Published 25 November 2014 <br/>
 
 ## Aknowlegements
 
