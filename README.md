@@ -14,7 +14,7 @@ In our previous works [2,3,4], we developed machine learning workflows based on 
 
 ## What we've done
 
-In this project, we applied an image-to-graph translation tool, [Relationformer](https://github.com/suprosanna/relationformer) [5], to non-contact AFM (nc-AFM) images to predict sample structures, including atomic types and bonds. Specifically, we used a transformer-based model capable of simultaneously predicting objects (atoms) and their relationships (bonds), ensuring accurate geometric characterization.
+In this project, we successfully applied an image-to-graph translation tool, [Relationformer](https://github.com/suprosanna/relationformer) [5], to non-contact AFM (nc-AFM) images to predict sample structures, including atomic types and bonds. Specifically, we used a transformer-based model capable of simultaneously predicting objects (atoms) and their relationships (bonds), ensuring accurate geometric characterization.
 
 To train this model, we utilized a high-throughput nc-AFM simulator, PPAFM, which provides high-resolution AFM images alongside molecular graph labels.
 
