@@ -1,10 +1,10 @@
 DATA:
   DIM: 3                  # data dimension
   BATCH_SIZE: 48          # Batch size for a single GPU, could be overwritten by command line argument
-  DATA_PATH: './data/vessel_data/train_data/'        # Path to dataset, could be overwritten by command line argument
-  TEST_DATA_PATH: './data/vessel_data/test_data/'
+  DATA_PATH: '/scratch/phys/project/sin/hackathon/data/afm.h5'        # Path to dataset, could be overwritten by command line argument
+  TEST_DATA_PATH: '/scratch/phys/project/sin/hackathon/data/afm.h5'
   DATASET: 'synth_3d'     # Dataset name
-  IMG_SIZE: [64, 64, 64]  # Input image size
+  IMG_SIZE: [128, 128, 10]  # Input image size
   NUM_PATCH: 4            # no of patch from each volume
   INTERPOLATION: 'bicubic'        # Interpolation to resize image (random, bilinear, bicubic)
   PIN_MEMORY: True        # Pin CPU memory in DataLoader for more efficient (sometimes) transfer to GPU.
