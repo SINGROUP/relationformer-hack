@@ -92,12 +92,12 @@ class RelationformerTrainer(SupervisedTrainer):
         self.config = kwargs.pop('config')
 
     def _iteration(self, engine, batchdata):
-        images, segs, nodes, edges = batchdata[0], batchdata[1], batchdata[2], batchdata[3]
+        images, nodes, edges = batchdata[0], batchdata[1], batchdata[2]
         
         # # inputs, targets = self.get_batch(batchdata, image_keys=IMAGE_KEYS, label_keys="label")
         # # inputs = torch.cat(inputs, 1)
         images = images.to(engine.state.device,  non_blocking=False)
-        segs = segs.to(engine.state.device,  non_blocking=False)
+        #segs = segs.to(engine.state.device,  non_blocking=False)
         nodes = [node.to(engine.state.device,  non_blocking=False) for node in nodes]
         edges = [edge.to(engine.state.device,  non_blocking=False) for edge in edges]
         target = {"nodes": nodes, "edges": edges}
@@ -105,7 +105,7 @@ class RelationformerTrainer(SupervisedTrainer):
         self.network.train()
         self.optimizer.zero_grad()
         
-        h, out = self.network(segs)
+        h, out = self.network(images)
         
         valid_token = torch.argmax(out['pred_logits'], -1)
         # valid_token = torch.sigmoid(nodes_prob[...,3])>0.5
