@@ -32,11 +32,11 @@ To train this model, we utilized a high-throughput nc-AFM simulator, PPAFM, whic
 ## References
 1. N. Oinonen, A. V. Yakutovich, A. Gallardo, M. Ondracek, P. Hapala, O. Krejci, *Advancing Scanning Probe Microscopy Simulations: A Decade of Development in Probe-Particle Models*, Comput. Phys. Commun. **305**, 109341 (2024).
 
-2. F. Priante, N. Oinonen, Y. Tian, D. Guan, C. Xu, S. Cai, P. Liljeroth, Y. Jiang, A. S. Foster, *ACS Nano* **18**(7), 5546-5555 (2024). DOI: 10.1021/acsnano.3c10958.
+2. F. Priante, N. Oinonen, Y. Tian, D. Guan, C. Xu, S. Cai, P. Liljeroth, Y. Jiang, A. S. Foster, *ACS Nano* **18**(7), 5546-5555 (2024). 
 
-3. L. Kurki, N. Oinonen, A. S. Foster, *ACS Nano* **18**(17), 11130-11138 (2024). DOI: 10.1021/acsnano.3c12654.
+3. L. Kurki, N. Oinonen, A. S. Foster, *ACS Nano* **18**(17), 11130-11138 (2024). 
 
-4. N. Oinonen, L. Kurki, A. Ilin *et al.*, *Molecule Graph Reconstruction from Atomic Force Microscope Images with Machine Learning*, MRS Bull. **47**, 895–905 (2022). DOI: 10.1557/s43577-022-00324-3.
+4. N. Oinonen, L. Kurki, A. Ilin *et al.*, *Molecule Graph Reconstruction from Atomic Force Microscope Images with Machine Learning*, MRS Bull. **47**, 895–905 (2022). 
 
 5. S. Shit, R. Koner, B. Wittmann *et al.*, *Relationformer: A Unified Framework for Image-to-Graph Generation*, arXiv:2203.10202 (2022).
 
