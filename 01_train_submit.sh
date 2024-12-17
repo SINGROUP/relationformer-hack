@@ -6,7 +6,7 @@
 #SBATCH --nodes=1               # Total number of nodes 
 #SBATCH -c 4                  # Number of cores per task/node
 #SBATCH -J 01_train    # Job name
-#SBATCH -o 01_train_%j.out          # Output file
+#SBATCH -o train_%j.out          # Output file
 
 # Load environment
 # module load anaconda # On old triton
