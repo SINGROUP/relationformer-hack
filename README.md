@@ -20,8 +20,8 @@ To train this model, we utilized a high-throughput nc-AFM simulator, PPAFM, whic
 
 ## Methods
 
-Simulation data: We have use PPM model to get the simulated images. 
-Image-to-Graph model: We have use the Relationformer as our end-to-end model. 
+- Simulation data: We have use PPM model to get the simulated images. 
+- Image-to-Graph model: We have use the Relationformer as our end-to-end model. 
 
 ## Expected results
 
